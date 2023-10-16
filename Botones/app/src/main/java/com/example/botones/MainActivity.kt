@@ -2,16 +2,22 @@ package com.example.botones
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -78,5 +84,28 @@ fun EjemploBoton(){
         TextButton(onClick = { Toast.makeText(context,"Pulsado el TextButton",Toast.LENGTH_SHORT).show()}) {
             Text("Esto es TextButton")
         }
+        ImageButton(
+            onClick = {
+                Log.e("Fernando","Pulsado el botón de imagen")
+                Toast.makeText(context,"Pulsado el botón de imagen",Toast.LENGTH_SHORT).show()
+            },
+            modifier = Modifier.size(100.dp) // Tamaño del botón
+        ) {
+            Icon(imageVector = Icons.Default.Home, contentDescription = "Botón con imagen")
+        }
+    }
+}
+
+@Composable
+fun ImageButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.primary,
+        modifier = modifier.then(Modifier.clickable { onClick() })
+    ) {
+        content()
     }
 }
