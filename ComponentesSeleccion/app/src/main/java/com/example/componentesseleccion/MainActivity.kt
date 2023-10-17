@@ -2,6 +2,7 @@ package com.example.componentesseleccion
 
 import android.os.Bundle
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import com.example.componentesseleccion.ui.theme.ComponentesSeleccionTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,21 +53,80 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    var context = LocalContext.current
                     //MiSwitch()
                     //IconSwitchPreview()
                     //MiCheckBox()
-                    Column() {
-                        MiCheckBoxTexto("Opción 1")
-                        MiCheckBoxTexto("Opción 2")
-                        MiCheckBoxTexto("Opción 3")
-                        MiCheckBoxTexto("Opción 4")
+//                    Column() {
+//                        MiCheckBoxTexto("Opción 1")
+//                        MiCheckBoxTexto("Opción 2")
+//                        MiCheckBoxTexto("Opción 3")
+//                        MiCheckBoxTexto("Opción 4")
+//                    }
+
+                    //-------------------------------------------------------
+                    //Para un checkBox.
+//                    var estado by remember { mutableStateOf(false) }
+//                    var checkInfo = CheckInfo(
+//                        title="Opción 1",
+//                        selected = estado,
+//                        onCheckedChange = {estado = it}
+//                    )
+//                    Column {
+//                        MiCheckBoxObjeto(checkInfo)
+//                        Button(onClick = {
+//                            if (checkInfo.selected) {
+//                                Toast.makeText(context, "Seleccionado", Toast.LENGTH_SHORT).show()
+//                            }
+//                            else {
+//                                Toast.makeText(context, "No seleccionado", Toast.LENGTH_SHORT).show()
+//                            }
+//                        }) {
+//                            Text(text = "Comprobar")
+//                        }
+//                    }
+
+                    //-------------------------------------------------------
+                    //Un conjunto de CheckBox.
+                    Column {
+                        var alTitulosCheckBox = generarOpciones(titulos = listOf("Opciones 1", "Opción 2", "Ejemplo 3"))
+                        alTitulosCheckBox.forEach {
+                            MiCheckBoxObjeto(info = it)
+                        }
+                        var seleccionados = ArrayList<String>()
+                        Button(onClick = {
+                            seleccionados.clear()
+                            alTitulosCheckBox.forEach {
+                                if (it.selected){
+                                    seleccionados.add(it.title)
+                                }
+                            }
+                            Toast.makeText(context,seleccionados.toString(),Toast.LENGTH_SHORT).show()
+                        }) {
+                            Text(text = "Comprobar")
+                        }
                     }
+
                 }
             }
         }
     }
 }
 
+@Composable
+fun generarOpciones(titulos:List<String>):ArrayList<CheckInfo>{
+    var AlInfo = ArrayList<CheckInfo>()
+    titulos.forEach{
+        var estado by remember {mutableStateOf(false)}
+        var chInfo = CheckInfo(
+            title = it,
+            selected = estado,
+            onCheckedChange = {estado = it}
+        )
+        AlInfo.add(chInfo)
+    }
+    return AlInfo
+}
 @Composable
 fun MiSwitch(){
     var estado by remember {mutableStateOf(true)}
@@ -94,7 +157,13 @@ fun MiCheckBox(){
         )
     )
 }
-
+@Composable
+fun MiCheckBoxObjeto(info:CheckInfo){
+    Row(){
+        Checkbox(checked = info.selected, onCheckedChange = {info.onCheckedChange(!info.selected)})
+        Text(info.title, modifier = Modifier.padding(vertical = 12.dp))
+    }
+}
 @Composable
 fun MiCheckBoxTexto(texto:String){
     var estado by remember {mutableStateOf(true)}
