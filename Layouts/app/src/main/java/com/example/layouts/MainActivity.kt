@@ -201,25 +201,45 @@ fun MisConstraintsLayouts(){
     ConstraintLayout(modifier = Modifier.fillMaxSize()){
         val (boxRed, boxBlue, boxGreen, boxYellow) = createRefs()
 
-        Box(modifier = Modifier.size(125.dp).background(Color.Red).constrainAs(boxRed){
-            top.linkTo(boxYellow.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        })
-        Box(modifier = Modifier.size(125.dp).background(Color.Blue).constrainAs(boxBlue){
-            top.linkTo(boxGreen.bottom)
-            end.linkTo(boxYellow.start)
-        })
-        Box(modifier = Modifier.size(125.dp).background(Color.Green).constrainAs(boxGreen){
-            bottom.linkTo(boxYellow.top)
-            start.linkTo(boxYellow.end)
-        })
-        Box(modifier = Modifier.size(125.dp).background(Color.Yellow).constrainAs(boxYellow){
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        })
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Red)
+            .constrainAs(boxRed) {
+                top.linkTo(boxYellow.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }){
+            Text(text = "Texto en box rojo")
+        }
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Blue)
+            .constrainAs(boxBlue) {
+                top.linkTo(boxGreen.bottom)
+                end.linkTo(boxYellow.start)
+            }){
+            Text(text = "Texto en box azul")
+        }
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Green)
+            .constrainAs(boxGreen) {
+                bottom.linkTo(boxYellow.top)
+                start.linkTo(boxYellow.end)
+            }){
+            Text(text = "Texto en box verde")
+        }
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Yellow)
+            .constrainAs(boxYellow) {
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }){
+            Text(text = "Texto en box amarillo")
+        }
     }
 }
 
@@ -232,10 +252,13 @@ fun ConstraintExampleGuide(){
         val topGuide = createGuidelineFromTop(0.1f) //10%
         val startGuide = createGuidelineFromStart(0.25f)
 
-        Box(modifier = Modifier.size(125.dp).background(Color.Red).constrainAs(boxBlue){
-            top.linkTo(topGuide)
-            start.linkTo(startGuide)
-        })
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Red)
+            .constrainAs(boxBlue) {
+                top.linkTo(topGuide)
+                start.linkTo(startGuide)
+            })
     }
 }
 
@@ -245,17 +268,26 @@ fun ConstraintExampleBarrier(){
         val (boxBlue, boxGreen, boxMag) = createRefs()
         val miBarrier = createEndBarrier(boxBlue, boxGreen) //Se crea una "jaula" para los elementos incluidos.
 
-        Box(modifier = Modifier.size(125.dp).background(Color.Blue).constrainAs(boxBlue){
-            start.linkTo(parent.start, margin = 10.dp)
-        })
-        Box(modifier = Modifier.size(250.dp).background(Color.Green).constrainAs(boxGreen){
-            top.linkTo(boxBlue.bottom)
-            start.linkTo(parent.start, margin = 50.dp)
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Blue)
+            .constrainAs(boxBlue) {
+                start.linkTo(parent.start, margin = 10.dp)
+            })
+        Box(modifier = Modifier
+            .size(250.dp)
+            .background(Color.Green)
+            .constrainAs(boxGreen) {
+                top.linkTo(boxBlue.bottom)
+                start.linkTo(parent.start, margin = 50.dp)
 
-        })
-        Box(modifier = Modifier.size(125.dp).background(Color.Magenta).constrainAs(boxMag){
-            start.linkTo(miBarrier)
-        })
+            })
+        Box(modifier = Modifier
+            .size(125.dp)
+            .background(Color.Magenta)
+            .constrainAs(boxMag) {
+                start.linkTo(miBarrier)
+            })
     }
 }
 
@@ -265,18 +297,27 @@ fun ConstraintExampleChains(){
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (boxBlue, boxGreen, boxMag) = createRefs()
 
-        Box(modifier = Modifier.size(90.dp).background(Color.Blue).constrainAs(boxBlue){
-            start.linkTo(parent.start)
-            end.linkTo(boxGreen.start)
-        })
-        Box(modifier = Modifier.size(90.dp).background(Color.Green).constrainAs(boxGreen){
-            start.linkTo(boxBlue.end)
-            end.linkTo(boxMag.start)
-        })
-        Box(modifier = Modifier.size(90.dp).background(Color.Magenta).constrainAs(boxMag){
-            start.linkTo(boxGreen.end)
-            end.linkTo(parent.end)
-        })
+        Box(modifier = Modifier
+            .size(90.dp)
+            .background(Color.Blue)
+            .constrainAs(boxBlue) {
+                start.linkTo(parent.start)
+                end.linkTo(boxGreen.start)
+            })
+        Box(modifier = Modifier
+            .size(90.dp)
+            .background(Color.Green)
+            .constrainAs(boxGreen) {
+                start.linkTo(boxBlue.end)
+                end.linkTo(boxMag.start)
+            })
+        Box(modifier = Modifier
+            .size(90.dp)
+            .background(Color.Magenta)
+            .constrainAs(boxMag) {
+                start.linkTo(boxGreen.end)
+                end.linkTo(parent.end)
+            })
 
         //Las cadenas es una forma de agrupar controles.
         //createHorizontalChain(boxBlue, boxGreen,boxMag, chainStyle = ChainStyle.Packed)
