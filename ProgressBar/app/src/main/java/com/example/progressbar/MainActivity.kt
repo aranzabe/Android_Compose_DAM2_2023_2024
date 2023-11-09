@@ -6,7 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
@@ -35,8 +37,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //MiProgressBar()
-                    MiProgressBarAvanzado()
+                    Column {
+                        MiProgressBar()
+                        Spacer(modifier = Modifier.height(10.dp))
+                        MiProgressBarAvanzado()
+                    }
                 }
             }
         }
@@ -56,7 +61,7 @@ fun MiProgressBar() {
         }
         Button(onClick = { showPbVal = !showPbVal}) {
             if (showPbVal){
-                Text("Desahibilitar")
+                Text("Deshabilitar")
             }
             else {
                 Text("Habilitar")
@@ -65,6 +70,10 @@ fun MiProgressBar() {
     }
 }
 
+/**
+ * Los progressBar  representan valores entre 0 y 1 (porcentajes). Pero el control de máx y mín
+ * tenemos que hacerlo por código, si queremos.
+ */
 @Composable
 fun MiProgressBarAvanzado() {
     var valor by rememberSaveable { mutableStateOf(0f) }

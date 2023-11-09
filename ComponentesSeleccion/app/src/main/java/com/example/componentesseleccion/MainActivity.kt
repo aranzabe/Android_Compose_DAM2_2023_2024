@@ -1,6 +1,7 @@
 package com.example.componentesseleccion
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -59,9 +60,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     var context = LocalContext.current
-                    //MiSwitch()
-                    //IconSwitchPreview()
-                    //MiCheckBox()
+//                    Column {
+//                        MiSwitch()
+//                        IconSwitchPreview()
+//                    }
+//                    MiCheckBox()
 //                    Column() {
 //                        MiCheckBoxTexto("Opción 1")
 //                        MiCheckBoxTexto("Opción 2")
@@ -92,7 +95,7 @@ class MainActivity : ComponentActivity() {
 //                    }
 
                     //-------------------------------------------------------
-                    //Un conjunto de CheckBox.
+//                    Un conjunto de CheckBox.
 //                    Column {
 //                        var alTitulosCheckBox =
 //                            generarOpciones(titulos = listOf("Opciones 1", "Opción 2", "Ejemplo 3"))
@@ -183,14 +186,18 @@ class MainActivity : ComponentActivity() {
         var estado by remember { mutableStateOf(true) }
         Switch(
             checked = estado,
-            onCheckedChange = { estado = !estado },
+            onCheckedChange = {
+                Log.e("Fernando", "Switch pulsado: $it")
+                //estado = !estado
+                estado = it
+                              },
             enabled = true,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = Color.Green,
-                checkedTrackColor = Color.Red,
-                uncheckedThumbColor = Color.Magenta,
-                uncheckedTrackColor = Color.Yellow
-            )
+//            colors = SwitchDefaults.colors(
+//                checkedThumbColor = Color.Green,
+//                checkedTrackColor = Color.Red,
+//                uncheckedThumbColor = Color.Magenta,
+//                uncheckedTrackColor = Color.Yellow
+//            )
         )
     }
 
