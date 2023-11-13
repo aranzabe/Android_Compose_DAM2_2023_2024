@@ -49,7 +49,7 @@ import com.example.componentesseleccion.ui.theme.ComponentesSeleccionTheme
 import kotlinx.coroutines.selects.select
 
 class MainActivity : ComponentActivity() {
-
+    private var valorCb = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -64,8 +64,12 @@ class MainActivity : ComponentActivity() {
 //                        MiSwitch()
 //                        IconSwitchPreview()
 //                    }
-//                    MiCheckBox()
 //                    Column() {
+//                        MiCheckBox()
+//
+//                        Button(onClick = { Toast.makeText(context, "El valor del checkBox es ${valorCb}",Toast.LENGTH_SHORT).show() }) {
+//                            Text(text = "Comprobar checkBox")
+//                        }
 //                        MiCheckBoxTexto("Opción 1")
 //                        MiCheckBoxTexto("Opción 2")
 //                        MiCheckBoxTexto("Opción 3")
@@ -84,10 +88,10 @@ class MainActivity : ComponentActivity() {
 //                        MiCheckBoxObjeto(checkInfo)
 //                        Button(onClick = {
 //                            if (checkInfo.selected) {
-//                                Toast.makeText(context, "Seleccionado", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(context, "${checkInfo.title} seleccionado", Toast.LENGTH_SHORT).show()
 //                            }
 //                            else {
-//                                Toast.makeText(context, "No seleccionado", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(context, "${checkInfo.title} NO seleccionado", Toast.LENGTH_SHORT).show()
 //                            }
 //                        }) {
 //                            Text(text = "Comprobar")
@@ -96,31 +100,31 @@ class MainActivity : ComponentActivity() {
 
                     //-------------------------------------------------------
 //                    Un conjunto de CheckBox.
-//                    Column {
-//                        var alTitulosCheckBox =
-//                            generarOpciones(titulos = listOf("Opciones 1", "Opción 2", "Ejemplo 3"))
-//                        alTitulosCheckBox.forEach {
-//                            MiCheckBoxObjeto(info = it)
-//                        }
-//                        var seleccionados = ArrayList<String>()
-//                        Button(onClick = {
-//                            seleccionados.clear()
-//                            alTitulosCheckBox.forEach {
-//                                if (it.selected) {
-//                                    seleccionados.add(it.title)
-//                                }
-//                            }
-//                            Toast.makeText(context, seleccionados.toString(), Toast.LENGTH_SHORT)
-//                                .show()
-//                        }) {
-//                            Text(text = "Comprobar")
-//                        }
-//                    }
+                    Column {
+                        var alTitulosCheckBox =
+                            generarOpciones(titulos = listOf("Queso", "Jamón", "Piña"))
+                        alTitulosCheckBox.forEach {
+                            MiCheckBoxObjeto(info = it)
+                        }
+                        var seleccionados = ArrayList<String>()
+                        Button(onClick = {
+                            seleccionados.clear()
+                            alTitulosCheckBox.forEach {
+                                if (it.selected) {
+                                    seleccionados.add(it.title)
+                                }
+                            }
+                            Toast.makeText(context, seleccionados.toString(), Toast.LENGTH_SHORT)
+                                .show()
+                        }) {
+                            Text(text = "Comprobar")
+                        }
+                    }
 
 
                     //----------------- RadioButtons -----
                     //MiRadioButton()
-                    MiRadiButtonsList()
+                    //MiRadiButtonsList()
                 }
             }
         }
@@ -203,17 +207,22 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun MiCheckBox() {
+        var context = LocalContext.current
         var estado by remember { mutableStateOf(true) }
         var estadoEnable by remember { mutableStateOf(true) }
         Checkbox(
             checked = estado,
-            onCheckedChange = { estado = !estado },
-            enabled = estadoEnable,
-            colors = CheckboxDefaults.colors(
-                checkedColor = Color.Green,
-                uncheckedColor = Color.Red,
-                checkmarkColor = Color.Magenta
-            )
+            onCheckedChange = { estado = !estado
+                                Toast.makeText(context,"Pulsado el chBox: ${estado}",Toast.LENGTH_SHORT ).show()
+                                this.valorCb = estado
+                              },
+            enabled = estadoEnable
+//            ,
+//            colors = CheckboxDefaults.colors(
+//                checkedColor = Color.Green,
+//                uncheckedColor = Color.Red,
+//                checkmarkColor = Color.Magenta
+//            )
         )
     }
 
