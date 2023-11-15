@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -81,21 +82,21 @@ fun miCard(){
         .height(100.dp)
         ,
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(30.dp),
         //shape =MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
-        border = BorderStroke(5.dp, Color.DarkGray),
+        border = BorderStroke(3.dp, Color.Green),
         onClick = {
-                  Log.e("Fernando","Pulsado el contenido del Card")
+            Log.e("Fernando","Pulsado el contenido del Card")
         },
         ) {
-        Column(modifier = Modifier.padding(15.dp)) {
-            Text(text = "Texto 1")
-            Text(text = "Texto 2")
-            Text(text = "Texto 3")
-        }
+            Column(modifier = Modifier.padding(15.dp)) {
+                Text(text = "Texto 1")
+                Text(text = "Texto 2")
+                Text(text = "Texto 3")
+            }
     }
 }
 
@@ -103,10 +104,11 @@ fun miCard(){
 @Composable
 fun miBadgeBox(){
     // Prueba quitando y poniendo todos los colores.
-    BadgedBox(modifier = Modifier.padding(15.dp),  badge = { Badge() { Text("80") } }) {
-//    BadgedBox(modifier = Modifier.padding(15.dp).background(color = Color.Cyan),  badge = { Badge(Modifier.background(Color.Green), containerColor = Color.Red) { Text("80") } }) {
+    BadgedBox(modifier = Modifier.padding(15.dp),  badge = { Badge() { Text("2") } }) {
+//    BadgedBox(modifier = Modifier.padding(15.dp).background(color = Color.Cyan),
+//        badge = { Badge(Modifier.background(Color.Green), containerColor = Color.Red) { Text("9") } }) {
         Icon(
-            Icons.Filled.MailOutline,
+            Icons.Filled.Info,
             contentDescription = "Favorite"
         )
     }
@@ -131,7 +133,9 @@ fun miDropDown(){
                 }
                 .fillMaxWidth()
         )
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false })
+        DropdownMenu(expanded = expanded, onDismissRequest = {
+//            expanded = false
+        })
         {
             usuarios.forEach {
                 DropdownMenuItem(text = { Text(text = it) }, onClick = {

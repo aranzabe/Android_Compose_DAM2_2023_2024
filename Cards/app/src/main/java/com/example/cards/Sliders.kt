@@ -29,8 +29,8 @@ fun SliderAvanzado(){
     Column (horizontalAlignment = Alignment.CenterHorizontally){
         Slider(
             value = sliderPos,
-            valueRange = 0f..10f,
-            steps = 9,
+            valueRange = 0f..20f,
+            steps = 19,
             onValueChange = {
                  sliderPos = it
             },

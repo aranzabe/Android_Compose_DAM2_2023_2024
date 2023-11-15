@@ -42,41 +42,43 @@ class MainActivity : ComponentActivity() {
 
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    //modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Opción A --> Diálogo básico.
-//                    var mostrarDialogo by remember { mutableStateOf(false) }
-//                    Column {
-//                        Button(onClick = {
-//                            mostrarDialogo = true
-//                        }) {
-//                            Text(text = "Diálogo básico")
-//                        }
-//
-//                        if (mostrarDialogo) {
-//                            val elec = DialogoBasico()
-//                            if (elec != -1) {
-//                                Toast.makeText(context, "Opción elegida: $elec", Toast.LENGTH_SHORT)
-//                                    .show()
-//                            }
-//                        }
-//                    }
-
-                    //Opción B --> Diálogo personalizado.
                     var mostrarDialogo by remember { mutableStateOf(false) }
                     Column {
                         Button(onClick = {
                             mostrarDialogo = true
                         }) {
-                            Text(text = "Diálogo personalizado")
+                            Text(text = "Diálogo básico")
                         }
 
                         if (mostrarDialogo) {
-                            //DialogoPersonalizado()
-                            DialogoPersonalizadoAvanzado()
+                            val elec = DialogoBasico()
+                            if (elec != -1) {
+                                Toast.makeText(context, "Opción elegida: $elec", Toast.LENGTH_SHORT)
+                                    .show()
+                                mostrarDialogo = false
+                            }
+
                         }
                     }
+
+                    //Opción B --> Diálogo personalizado.
+//                    var mostrarDialogo by remember { mutableStateOf(false) }
+//                    Column {
+//                        Button(onClick = {
+//                            mostrarDialogo = true
+//                        }) {
+//                            Text(text = "Diálogo personalizado")
+//                        }
+//
+//                        if (mostrarDialogo) {
+//                            //DialogoPersonalizado()
+//                            DialogoPersonalizadoAvanzado()
+//                        }
+//                    }
                 }
             }
         }
@@ -93,6 +95,7 @@ fun DialogoBasico():Int {
             onDismissRequest = {
                 // Esto se dispara si el usuario clickea fuera de la ventana.
                 mostrar = false
+                eleccion = 2
             },
             title = {
                 Text(text = "Título de la ventana")
