@@ -153,6 +153,7 @@ fun DialogoPersonalizado(){
 @Composable
 fun DialogoPersonalizadoAvanzado(){
     var mostrar by remember { mutableStateOf(true)  }
+    var eleccion by remember { mutableStateOf(-1) }
     if (mostrar) {
         Dialog(onDismissRequest = { mostrar=false },
             properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false) //Esto lo hace ventana de obligada lectura. Aunque pulse fuera.
@@ -161,6 +162,7 @@ fun DialogoPersonalizadoAvanzado(){
                 .height(250.dp)
                 .padding(10.dp)) {
                 TituloDialogo(texto = "Elige la opción")
+                var eleccion by remember { mutableStateOf("") }
                 itemsDialogo(email = "uno@gmail.com", draw = R.drawable.it1)
                 itemsDialogo(email = "una@gmail.com", draw = R.drawable.it2)
                 itemsDialogo(email = "Nuevo", draw = R.drawable.ic_add)
