@@ -100,31 +100,34 @@ class MainActivity : ComponentActivity() {
 
                     //-------------------------------------------------------
 //                    Un conjunto de CheckBox.
-                    Column {
-                        var alTitulosCheckBox =
-                            generarOpciones(titulos = listOf("Queso", "Jamón", "Piña"))
-                        alTitulosCheckBox.forEach {
-                            MiCheckBoxObjeto(info = it)
-                        }
-                        var seleccionados = ArrayList<String>()
-                        Button(onClick = {
-                            seleccionados.clear()
-                            alTitulosCheckBox.forEach {
-                                if (it.selected) {
-                                    seleccionados.add(it.title)
-                                }
-                            }
-                            Toast.makeText(context, seleccionados.toString(), Toast.LENGTH_SHORT)
-                                .show()
-                        }) {
-                            Text(text = "Comprobar")
-                        }
-                    }
+//                    Column {
+//                        var alTitulosCheckBox =
+//                            generarOpciones(titulos = listOf("Queso", "Jamón", "Piña"))
+//                        alTitulosCheckBox.forEach {
+//                            MiCheckBoxObjeto(info = it)
+//                        }
+//                        var seleccionados = ArrayList<String>()
+//                        Button(onClick = {
+//                            seleccionados.clear()
+//                            alTitulosCheckBox.forEach {
+//                                if (it.selected) {
+//                                    seleccionados.add(it.title)
+//                                }
+//                            }
+//                            Toast.makeText(context, seleccionados.toString(), Toast.LENGTH_SHORT)
+//                                .show()
+//                        }) {
+//                            Text(text = "Comprobar")
+//                        }
+//                    }
 
 
                     //----------------- RadioButtons -----
                     //MiRadioButton()
-                    //MiRadiButtonsList()
+                    val dev = MiRadiButtonsList()
+                    if (dev.isNotEmpty()){
+                        Toast.makeText(context, "Se ha seleccionado la opción $dev",Toast.LENGTH_SHORT).show()
+                     }
                 }
             }
         }
@@ -132,9 +135,9 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun MiRadiButtonsList(){
+    fun MiRadiButtonsList():String{
         var selected by remember {
-            mutableStateOf("Op1")
+            mutableStateOf("")
         }
         Column(Modifier.fillMaxWidth()) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
@@ -154,12 +157,14 @@ class MainActivity : ComponentActivity() {
                 Text(text = "Op4")
             }
         }
+        return selected
     }
 
     @Composable
     fun MiRadioButton(){
-        Row(Modifier.fillMaxWidth()){
-            RadioButton(selected = false, onClick = {  }, colors = RadioButtonDefaults.colors(
+        var sel by remember {  mutableStateOf(false)   }
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
+            RadioButton(selected = sel, onClick = { sel = !sel }, colors = RadioButtonDefaults.colors(
                 selectedColor = Color.Red,
                 unselectedColor = Color.Yellow,
                 disabledSelectedColor = Color.Gray
