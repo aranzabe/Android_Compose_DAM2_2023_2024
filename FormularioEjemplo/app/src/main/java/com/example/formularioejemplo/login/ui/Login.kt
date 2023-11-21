@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -82,12 +83,22 @@ fun Footer(modifier: Modifier) {
 fun Body(modifier: Modifier) {
     var email by remember { mutableStateOf ("") }
     var password by remember { mutableStateOf ("") }
+    var estadoCheck by remember { mutableStateOf(false) }
     var isLoginEnable by remember { mutableStateOf(false) }
     var context = LocalContext.current
+    var checkInfo = CheckInfo(
+        title="Opción 1",
+        selected = estadoCheck,
+        onCheckedChange = {estadoCheck = it}
+    )
+
 
     Column(modifier = modifier) {
-        ImageLogo(Modifier.align(Alignment.CenterHorizontally).size(200.dp))
-        Spacer(modifier = Modifier.size(16.dp))
+        ImageLogo(
+            Modifier
+                .align(Alignment.CenterHorizontally)
+                .size(200.dp))
+        Spacer(modifier = Modifier.size(12.dp))
         Email(email) {
             email = it
             isLoginEnable = email.isNotEmpty() && password.isNotEmpty()
@@ -98,16 +109,22 @@ fun Body(modifier: Modifier) {
             isLoginEnable = email.isNotEmpty() && password.isNotEmpty()
         }
         Spacer(modifier = Modifier.size(16.dp))
+        MiCheckBoxObjeto(checkInfo)
+        Spacer(modifier = Modifier.size(4.dp))
         LoginButton(isLoginEnable){
-            var us = Usuario(email, password)
+            var us = Usuario(email, password, estadoCheck)
             Almacen.usuarios.add(us)
             Log.e("Fernando",Almacen.usuarios.toString())
             Toast.makeText(context, "Usuario almacenado", Toast.LENGTH_SHORT).show()
         }
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
+        //CerrarSesion(Modifier.fillMaxWidth())
+        CerrarSesion()
     }
 }
+
+
 
 @Composable
 fun LoginDivider() {
@@ -147,7 +164,7 @@ fun LoginButton(loginEnable: Boolean, onClickAction: (Boolean) -> Unit) {
             disabledContentColor = Color.White
         )
     ) {
-        Text(text = "Log In")
+        Text(text = "Iniciar sesión")
     }
 }
 
@@ -156,10 +173,13 @@ fun LoginButton(loginEnable: Boolean, onClickAction: (Boolean) -> Unit) {
 @Composable
 fun Password(password: String, onTextChanged: (String) -> Unit) {
     var showPassword by remember { mutableStateOf(value = false) }
-    OutlinedTextField(
+    TextField(
         value = password,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth().background(color = Color(0xFFFAFAFA)),
+        label = {Text("Introduce una clave")},
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color(0xFFFAFAFA)),
         placeholder = { Text("Password") },
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFB2B2B2),
@@ -202,8 +222,11 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
     TextField(
         value = email,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth().background(color = Color(0xFFFAFAFA)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color(0xFFFAFAFA)),
         placeholder = { Text(text = "Email") },
+        label = {Text("Introduce un correo")},
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -214,6 +237,18 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
         )
     )
 }
+
+@Composable
+fun MiCheckBoxObjeto(info: CheckInfo) {
+    Row() {
+        Checkbox(
+            checked = info.selected,
+            enabled = info.enable,
+            onCheckedChange = { info.onCheckedChange(!info.selected) })
+        Text(info.title, modifier = Modifier.padding(vertical = 12.dp))
+    }
+}
+
 
 @Composable
 fun ImageLogo(modifier: Modifier) {
@@ -231,4 +266,12 @@ fun Header(modifier: Modifier) {
         imageVector = Icons.Default.Close,
         contentDescription = "close app",
         modifier = modifier.clickable { activity.finish() })
+}
+@Composable
+//fun CerrarSesion(mod:Modifier){
+fun CerrarSesion(){
+    val activity = LocalContext.current as Activity
+    Button(modifier = Modifier.fillMaxWidth(), onClick = { activity.finish() }) {
+        Text(text = "Cerrar aplicación")
+    }
 }
