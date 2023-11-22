@@ -1,6 +1,5 @@
 package com.example.navegacion
 
-import Modelo.Usuario
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,9 +33,9 @@ class MainActivity : ComponentActivity() {
                         composable(Rutas.Pantalla1){ Pant1(navController) }
                         composable(Rutas.Pantalla2+"/{nombre}"){argumentos ->
                             Pant2(navController, argumentos.arguments?.getString("nombre")!!) }
-                        composable(Rutas.Pantalla3){ Pant3(navController) }
-//                        composable(Rutas.Pantalla3+"/{usu}", arguments = listOf(navArgument("usu"){ type = NavType.ParcelableType(Usuario::class.java)})){argumentos ->
-//                            Pant3(navController, argumentos.arguments?.getParcelable("usu")!!) }
+                        composable(Rutas.Pantalla3+"/{numero}", arguments = listOf(navArgument("numero"){type = NavType.IntType})){argumentos ->
+                            Pant3(navController, argumentos.arguments?.getInt("numero")!!)
+                        }
                     }
                 }
             }
@@ -44,6 +43,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 /*
-Por defecto los argumentos son String (ver paso de Pantalla1 a Pantalla2.
-Si queremos especificar otros tipos de argumentos ver paso de Pantalla2 a Pantalla3.
+Por defecto los argumentos son String (ver paso de Pantalla1 a Pantalla2).
+Se recomienda no pasar objetos de datos complejos cuando navegas, sino pasar la información mínima necesaria,
+como un identificador único o alguna otra forma de ID, cuando se realizan acciones de navegación.
+Los objetos complejos se deben almacenar como datos en una sola fuente de información, como la capa de datos.
+Una vez que llegues a tu destino después de navegar, podrás cargar la información requerida desde la única fuente
+de confianza mediante el ID pasado
  */

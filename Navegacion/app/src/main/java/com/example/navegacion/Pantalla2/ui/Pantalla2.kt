@@ -1,6 +1,5 @@
 package com.example.navegacion.Pantalla2.ui
 
-import Modelo.Usuario
 import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,14 +20,11 @@ fun Pant2(navController: NavHostController, nombre:String) {
         .background(Color.Green)){
         Text(text = "Hola $nombre esto es la pantalla 2")
         Button(onClick = {
-            //Sin argumentos
-            navController.navigate(Rutas.Pantalla3)
-            //Con argumento objeto.
-//            var u = Usuario("dam2@gmail.com",120)
-//            navController.navigate(Rutas.Pantalla3+"/$u")
+            navController.navigate(Rutas.Pantalla3+"/126")
         }) {
             Text(text = "Pantalla 3")
         }
     }
 }
+
 
