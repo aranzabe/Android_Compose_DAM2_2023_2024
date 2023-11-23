@@ -6,10 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.formularioejemplo.Ventana2.ui.Pant2
 import com.example.formularioejemplo.login.ui.Login
 import com.example.formularioejemplo.ui.theme.FormularioEjemploTheme
 
@@ -23,10 +26,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Login()
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = Rutas.Login){
+                        composable(Rutas.Login){
+                            Login(navController)
+                        }
+                        composable(Rutas.Pantalla2){
+                            Pant2(navController)
+                        }
+                        }
+                    }
                 }
             }
         }
     }
-}
+
 

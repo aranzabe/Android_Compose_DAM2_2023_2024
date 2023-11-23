@@ -3,7 +3,6 @@ package com.example.formularioejemplo.login.ui
 import Modelo.Almacen
 import Modelo.Usuario
 import android.app.Activity
-import android.service.autofill.OnClickAction
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -30,7 +29,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -50,17 +48,19 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.formularioejemplo.R
+import com.example.formularioejemplo.Rutas
 
 @Composable
-fun Login() {
+fun Login(navController: NavHostController) {
     Box(
         Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
         Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center))
+        Body(Modifier.align(Alignment.Center), navController)
         Footer(Modifier.align(Alignment.BottomCenter))
     }
 }
@@ -80,7 +80,7 @@ fun Footer(modifier: Modifier) {
 }
 
 @Composable
-fun Body(modifier: Modifier) {
+fun Body(modifier: Modifier, navController: NavHostController) {
     var email by remember { mutableStateOf ("") }
     var password by remember { mutableStateOf ("") }
     var estadoCheck by remember { mutableStateOf(false) }
@@ -116,6 +116,7 @@ fun Body(modifier: Modifier) {
             Almacen.usuarios.add(us)
             Log.e("Fernando",Almacen.usuarios.toString())
             Toast.makeText(context, "Usuario almacenado", Toast.LENGTH_SHORT).show()
+            navController.navigate(Rutas.Pantalla2)
         }
         Spacer(modifier = Modifier.size(16.dp))
         LoginDivider()
