@@ -1,6 +1,5 @@
 package com.example.formularioejemplo.login.ui
 
-import Modelo.Almacen
 import Modelo.Usuario
 import android.app.Activity
 import android.util.Log
