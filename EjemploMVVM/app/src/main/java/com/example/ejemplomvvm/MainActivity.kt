@@ -26,12 +26,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
+                    val lvm = LoginViewModel()
                     NavHost(navController = navController, startDestination = Rutas.Login){
                         composable(Rutas.Login){
-                            Login(navController, LoginViewModel())
+                            Login(navController, lvm)
                         }
                         composable(Rutas.Pantalla2){
-                            Pant2(navController)
+                            Pant2(navController, lvm)
                         }
                     }
                 }

@@ -119,8 +119,8 @@ fun Body(modifier: Modifier, navController: NavHostController, loginViewModel: L
         Spacer(modifier = Modifier.size(4.dp))
         LoginButton(isLoginEnable){
             var us = Usuario(email, password, estadoCheck)
-            Almacen.usuarios.add(us)
-            Log.e("Fernando",Almacen.usuarios.toString())
+            loginViewModel.addUsuario(us)
+            Log.e("Fernando",loginViewModel.usuarios.toString())
             Toast.makeText(context, "Usuario almacenado", Toast.LENGTH_SHORT).show()
             navController.navigate(Rutas.Pantalla2)
         }
