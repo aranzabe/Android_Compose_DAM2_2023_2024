@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //simpleRecyclerView()
-//                    RVUsuariosFilas()
+                    RVUsuariosFilas()
 //                    RVUsuariosCols()
 //                    GridUsuarios()
 //                    RVUsuariosControlsView()
