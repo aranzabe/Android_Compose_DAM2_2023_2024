@@ -8,6 +8,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,13 +18,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -77,6 +85,8 @@ fun Body(navController: NavHostController, principalViewModel: PrincipalViewMode
 fun UsersList(listadoViewModel: ListadoViewModel) {
     val users = listadoViewModel.usuarios
     val context = LocalContext.current
+    val showDialog: Boolean by listadoViewModel.showDialog.observeAsState(false)
+
     LazyColumn {
         items(users) { user ->
             ItemUsuarioLista(u = user){usu, tipo -> //Llamada a la función lamda clickable del card en ItemUsuario.
@@ -85,6 +95,8 @@ fun UsersList(listadoViewModel: ListadoViewModel) {
                     Toast.makeText(context, "Usuario sel: $usu", Toast.LENGTH_SHORT).show()
                 }
                 if (tipo == 2){//Long click
+                    listadoViewModel.dialogOpen()
+                    listadoViewModel.usuarioBorrar(usu)
                     Log.e("Fernando","Long click pulsado")
                 }
                 if (tipo == 3){//Double click
@@ -92,6 +104,18 @@ fun UsersList(listadoViewModel: ListadoViewModel) {
                 }
             }
         }
+    }
+    if (showDialog) {
+        MyAlertDialog(
+            onConfirm = {
+                listadoViewModel.dialogClose()
+                Log.e("Fernando",listadoViewModel.usuBorrar.toString())
+                listadoViewModel.onItemRemove(listadoViewModel.usuBorrar)
+            },
+            onDismiss = {
+                listadoViewModel.dialogClose()
+            }
+        )
     }
 }
 
@@ -175,4 +199,48 @@ fun IrPrincipalButton(onClickAction: (Boolean) -> Unit) {
     ) {
         Text(text = "Ir a la principal")
     }
+}
+
+
+@Composable
+fun MyAlertDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(imageVector = Icons.Default.Warning, contentDescription = null)
+                Text(text = "Confirmar borrado")
+            }
+        },
+        text = {
+            Text("¿Estás seguro de que deseas borrar este elemento?")
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm()
+                }
+            ) {
+                Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                Text("Sí")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Icon(imageVector = Icons.Default.Cancel, contentDescription = null)
+                Text("No")
+            }
+        }
+    )
 }
