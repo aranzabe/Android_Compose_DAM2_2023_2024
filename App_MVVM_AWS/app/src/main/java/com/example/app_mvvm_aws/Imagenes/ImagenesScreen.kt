@@ -77,7 +77,7 @@ fun PantallaImagenes(navController: NavHostController, pvm: PrincipalViewModel, 
                 navController.navigate(Rutas.Principal)
             }
             CerrarSesion()
-            RVImagenes(imagvm)
+            //RVImagenes(imagvm)
             Body(imagvm)
         }
     }
@@ -85,6 +85,7 @@ fun PantallaImagenes(navController: NavHostController, pvm: PrincipalViewModel, 
 
 @Composable
 fun Body(imagvm: ImagenesViewModel) {
+    RVImagenes(imagvm)
     PickImageFromGallery(imagvm)
 }
 
