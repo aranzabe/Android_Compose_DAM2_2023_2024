@@ -1,21 +1,28 @@
-package com.example.app_mvvm_aws.Principal
+package com.example.app_mvvm_23_24.Principal
 
+import Modelo.Usuario
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -24,6 +31,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,18 +45,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavHostController
-import com.example.app_mvvm_aws.Listado.ListadoViewModel
-import com.example.app_mvvm_aws.Rutas
-import com.amplifyframework.datastore.generated.model.Usuario
-import com.example.app_mvvm_aws.Imagenes.ImagenesViewModel
+import com.example.app_mvvm_23_24.Listado.ListadoViewModel
+import com.example.app_mvvm_23_24.Rutas
+
 
 @Composable
 fun Principal(
     navController: NavHostController,
     principalViewModel: PrincipalViewModel,
-    listadoViewModel: ListadoViewModel,
-    imagvm: ImagenesViewModel
+    listadoViewModel: ListadoViewModel
 ) {
     val showDialog: Boolean by principalViewModel.showDialog.observeAsState(false)
 
@@ -72,15 +82,7 @@ fun Principal(
                     })
             }
             IrListadoButton(){
-                listadoViewModel.getUsers()
                 navController.navigate(Rutas.Listado)
-            }
-            LoginButton(){
-                navController.navigate(Rutas.Login)
-            }
-            ImagenesButton(){
-                imagvm.cargaFicherosdeS3()
-                navController.navigate(Rutas.Imagenes)
             }
             CerrarSesion()
             Column (modifier = Modifier
@@ -98,7 +100,7 @@ fun Principal(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddUserDialog(principalViewModel:PrincipalViewModel, show: Boolean, onDismiss: () -> Unit, onUserAdded: (Usuario?) -> Unit) {
+fun AddUserDialog(principalViewModel:PrincipalViewModel, show: Boolean, onDismiss: () -> Unit, onUserAdded: (Usuario) -> Unit) {
     val nombre: String by principalViewModel.nombre.observeAsState("")
     val edad:Int by principalViewModel.edad.observeAsState(0)
     val parte:Boolean by principalViewModel.parte.observeAsState(false)
@@ -139,8 +141,7 @@ fun AddUserDialog(principalViewModel:PrincipalViewModel, show: Boolean, onDismis
                     onCheckedChange = { principalViewModel.cambiaParte(it) })
                 Spacer(modifier = Modifier.size(10.dp))
                 Button(onClick = {
-                    val u = Usuario.builder().nombre(nombre).edad(edad).parte(parte).build()
-                    Rutas.autoId++
+                    val u = Usuario(nombre, edad, parte)
                     onUserAdded(u)
                 }){
                     Text("Añadir")
@@ -157,44 +158,9 @@ fun AddUserDialog(principalViewModel:PrincipalViewModel, show: Boolean, onDismis
     }
 }
 
-
 @Composable
 fun TituloDialogo(texto:String){
     Text(text = texto, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
-}
-
-
-
-@Composable
-fun LoginButton(onClickAction: (Boolean) -> Unit) {
-    Button(
-        onClick = {
-            onClickAction(true);
-        },
-        modifier = Modifier.fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
-            disabledContentColor = Color.White
-        )
-    ) {
-        Text(text = "Ir al Login/Registro")
-    }
-}
-
-@Composable
-fun ImagenesButton(onClickAction: (Boolean) -> Unit) {
-    Button(
-        onClick = {
-            onClickAction(true);
-        },
-        modifier = Modifier.fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
-            disabledContentColor = Color.White
-        )
-    ) {
-        Text(text = "Ir a imágenes")
-    }
 }
 
 

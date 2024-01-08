@@ -14,9 +14,9 @@ class ListadoViewModel : ViewModel() {
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog: LiveData<Boolean> = _showDialog
 
-//    private val _usuBorrar = MutableLiveData<Usuario>()
-//    val usuBorrar: LiveData<Usuario> = _usuBorrar
-    lateinit var usuBorrar:Usuario
+    private val _usuBorrar = MutableLiveData<Usuario?>()
+    val usuBorrar: LiveData<Usuario?> = _usuBorrar
+//    lateinit var usuBorrar:Usuario
 
     private val _usuarios : ArrayList<Usuario> by mutableStateOf(arrayListOf())
     val usuarios : ArrayList<Usuario> = _usuarios
@@ -30,8 +30,8 @@ class ListadoViewModel : ViewModel() {
     }
 
     fun usuarioBorrar(u:Usuario){
-        //_usuBorrar.value = u
-        usuBorrar = u
+        _usuBorrar.value = u
+//        usuBorrar = u
     }
 
     fun onUserCreated(us: Usuario?) {

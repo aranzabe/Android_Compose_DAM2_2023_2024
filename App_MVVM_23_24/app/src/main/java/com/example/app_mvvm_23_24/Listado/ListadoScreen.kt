@@ -1,5 +1,6 @@
-package com.example.app_mvvm_aws.Listado
+package com.example.app_mvvm_23_24.Listado
 
+import Modelo.Usuario
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -37,16 +38,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.amplifyframework.datastore.generated.model.Usuario
-import com.example.app_mvvm_aws.Principal.CerrarSesion
-import com.example.app_mvvm_aws.Principal.PrincipalViewModel
-import com.example.app_mvvm_aws.Rutas
+import com.example.app_mvvm_23_24.Principal.CerrarSesion
+import com.example.app_mvvm_23_24.Principal.PrincipalViewModel
+import com.example.app_mvvm_23_24.Rutas
+
 
 @Composable
 fun Listado(
@@ -70,7 +73,6 @@ fun Listado(
 
 @Composable
 fun Body(navController: NavHostController, principalViewModel: PrincipalViewModel, listadoViewModel: ListadoViewModel) {
-    //val cargaRV: Boolean by listadoViewModel.cargaRV.observeAsState(true)
     Column {
         //Text(listadoViewModel.usuarios.toString())
         UsersList(listadoViewModel = listadoViewModel)
@@ -84,33 +86,32 @@ fun Body(navController: NavHostController, principalViewModel: PrincipalViewMode
 fun UsersList(listadoViewModel: ListadoViewModel) {
     val users = listadoViewModel.usuarios
     val context = LocalContext.current
-    val showDialog: Boolean by listadoViewModel.showDialog.observeAsState(false)
-    val usuBorrar : Usuario? by listadoViewModel.usuBorrar.observeAsState(null)
+    val showDialogBorrar: Boolean by listadoViewModel.showDialogBorrar.observeAsState(false)
 
     LazyColumn {
         items(users) { user ->
             ItemUsuarioLista(u = user){usu, tipo -> //Llamada a la función lamda clickable del card en ItemUsuario.
                 if (tipo == 1) {//Click
-                    //Log.e("Fernando","Click pulsado")
+                    Log.e("Fernando","Click pulsado")
                     Toast.makeText(context, "Usuario sel: $usu", Toast.LENGTH_SHORT).show()
                 }
                 if (tipo == 2){//Long click
                     listadoViewModel.dialogOpen()
                     listadoViewModel.usuarioBorrar(usu)
-                    //listadoViewModel.onItemRemove(usu)
+                    Log.e("Fernando","Long click pulsado")
                 }
                 if (tipo == 3){//Double click
-                    //Log.e("Fernando","Double click pulsado")
+                    Log.e("Fernando","Double click pulsado")
                 }
             }
         }
     }
-    if (showDialog) {
+    if (showDialogBorrar) {
         MyAlertDialog(
             onConfirm = {
                 listadoViewModel.dialogClose()
                 Log.e("Fernando",listadoViewModel.usuBorrar.toString())
-                listadoViewModel.onItemRemove(usuBorrar!!)
+                listadoViewModel.onItemRemove(listadoViewModel.usuBorrar)
             },
             onDismiss = {
                 listadoViewModel.dialogClose()
@@ -127,25 +128,24 @@ fun ItemUsuarioLista(u : Usuario, onItemSeleccionado:(Usuario, Int)->Unit){
     var isDoubleClick by remember { mutableStateOf(false) }
     var context = LocalContext.current
 
-
     Card(border = BorderStroke(2.dp, Color.Blue),
         modifier = Modifier
             .fillMaxWidth()
             .combinedClickable(
                 onDoubleClick = {
-                    Log.e("Fernando", "Doble click pulsado")
+                    Log.e("Fernando","Doble click pulsado")
                     isDoubleClick = true
-                    onItemSeleccionado(u, 3)
+                    onItemSeleccionado(u,3)
                 },
                 onLongClick = {
-                    Log.e("Fernando", "LongPress pulsado")
+                    Log.e("Fernando","LongPress pulsado")
                     isLongClick = true
-                    onItemSeleccionado(u, 2)
+                    onItemSeleccionado(u,2)
                 },
                 onClick = {
-                    Log.e("Fernando", "Click pulsado")
+                    Log.e("Fernando","Click pulsado")
                     isClick = true
-                    onItemSeleccionado(u, 1)
+                    onItemSeleccionado(u,1)
                 }
             )//Para que funcione lo anterior se debe comentar lo de 'clickable'
 //            .clickable {
@@ -159,14 +159,14 @@ fun ItemUsuarioLista(u : Usuario, onItemSeleccionado:(Usuario, Int)->Unit){
             .padding(2.dp)
             .combinedClickable(
                 onDoubleClick = {
-                    Log.e("Fernando", "Doble click pulsado")
+                    Log.e("Fernando","Doble click pulsado")
                 },
                 onLongClick = {
-                    Log.e("Fernando", "LongPress pulsado")
+                    Log.e("Fernando","LongPress pulsado")
                     isLongClick = true
                 },
                 onClick = {
-                    Log.e("Fernando", "Click pulsado")
+                    Log.e("Fernando","Click pulsado")
                 }
             ))
         Text(
